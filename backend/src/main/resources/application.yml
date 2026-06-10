@@ -1,0 +1,45 @@
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: pathway
+  
+  # Spring Data MongoDB Configuration
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/academic_pathway}
+  
+  # Spring Mail Configuration (Optional - Falls back to logging if variables are empty)
+  mail:
+    host: ${SPRING_MAIL_HOST:}
+    port: ${SPRING_MAIL_PORT:587}
+    username: ${SPRING_MAIL_USERNAME:}
+    password: ${SPRING_MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  
+  # Jackson configurations
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+# Grok (xAI) API Configuration
+grok:
+  api:
+    key: ${GROK_API_KEY:}
+  model: ${GROK_MODEL:grok-2}
+
+# Logging configurations
+logging:
+  level:
+    root: INFO
+    com.academic.pathway: DEBUG
+    org.springframework.data.mongodb: INFO

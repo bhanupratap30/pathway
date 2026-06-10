@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in - Google Accounts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #f0f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 28px;
+      width: 100%;
+      max-width: 450px;
+      padding: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 500px;
+      justify-content: space-between;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .logo {
+      width: 75px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 400;
+      color: #1f1f1f;
+      line-height: 1.3333;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      font-weight: 400;
+      color: #444746;
+    }
+
+    .content-area {
+      flex-grow: 1;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .account-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border: 1px solid #c4c7c5;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    .account-item:hover {
+      background-color: #f7f9fc;
+      border-color: #0b57d0;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: #0b57d0;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 16px;
+      margin-right: 12px;
+    }
+
+    .avatar.admin {
+      background-color: #b3261e;
+    }
+
+    .account-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .account-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #1f1f1f;
+    }
+
+    .account-email {
+      font-size: 12px;
+      color: #444746;
+    }
+
+    .custom-input-btn {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border: 1px dashed #c4c7c5;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s, border-color 0.2s;
+      color: #0b57d0;
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .custom-input-btn:hover {
+      background-color: #f3f6fc;
+      border-color: #0b57d0;
+    }
+
+    /* Form Fields */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #444746;
+      margin-bottom: 6px;
+    }
+
+    .text-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #747775;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #1f1f1f;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .text-input:focus {
+      border-color: #0b57d0;
+      box-shadow: 0 0 0 2px rgba(11, 87, 208, 0.2);
+    }
+
+    .select-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #747775;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #1f1f1f;
+      outline: none;
+      background-color: #fff;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    .btn {
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-weight: 500;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-text {
+      background: transparent;
+      color: #0b57d0;
+    }
+
+    .btn-text:hover {
+      background-color: #f3f6fc;
+    }
+
+    .btn-primary {
+      background-color: #0b57d0;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0842a0;
+    }
+
+    /* Spinner Screen */
+    .loading-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #0b57d0;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 24px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 16px;
+      color: #1f1f1f;
+      font-weight: 500;
+    }
+
+    /* Footer styling */
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid #e3e3e3;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-link {
+      font-size: 12px;
+      color: #444746;
+      text-decoration: none;
+    }
+
+    .footer-link:hover {
+      text-decoration: underline;
+    }
+
+    .footer-lang {
+      font-size: 12px;
+      color: #444746;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="logo-container">
+      <!-- Google Logo SVG -->
+      <svg class="logo" viewBox="0 0 74 24" width="74" height="24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.12 11.8v3.25h8.17c-.36 2.06-2.38 6.07-8.17 6.07-5.01 0-9.1-4.14-9.1-9.23 0-5.09 4.09-9.23 9.1-9.23 2.85 0 4.76 1.18 5.85 2.23l2.58-2.48C16.89 1.8 13.82 0 10.12 0 4.53 0 0 4.53 0 10.12s4.53 10.12 10.12 10.12c5.84 0 9.71-4.11 9.71-9.88 0-.66-.07-1.16-.16-1.56H10.12z" fill="#4285F4"/>
+        <path d="M29.56 6.94c-3.72 0-6.74 2.85-6.74 6.74s3.02 6.74 6.74 6.74 6.74-2.85 6.74-6.74-3.02-6.74-6.74-6.74zm0 10.45c-2.02 0-3.69-1.66-3.69-3.71s1.67-3.71 3.69-3.71 3.69 1.66 3.69 3.71-1.67 3.71-3.69 3.71z" fill="#EA4335"/>
+        <path d="M44.56 6.94c-3.72 0-6.74 2.85-6.74 6.74s3.02 6.74 6.74 6.74 6.74-2.85 6.74-6.74-3.02-6.74-6.74-6.74zm0 10.45c-2.02 0-3.69-1.66-3.69-3.71s1.67-3.71 3.69-3.71 3.69 1.66 3.69 3.71-1.67 3.71-3.69 3.71z" fill="#FBBC05"/>
+        <path d="M58.74 6.94c-3.62 0-6.52 2.92-6.52 6.74 0 3.79 2.9 6.74 6.52 6.74 1.76 0 3.12-.76 3.92-1.72h.08v1.36c0 2.58-1.38 3.96-3.6 3.96-1.82 0-2.95-1.31-3.37-2.4l-2.88 1.2c.84 2.02 3.07 4.47 6.25 4.47 3.86 0 6.64-2.27 6.64-7.01V7.26h-3.13v1.28h-.08c-.8-.96-2.16-1.6-3.83-1.6zm-.24 10.45c-2.02 0-3.57-1.74-3.57-3.71 0-2 1.55-3.71 3.57-3.71 2 0 3.53 1.74 3.53 3.71s-1.53 3.71-3.53 3.71z" fill="#4285F4"/>
+        <path d="M68.86.32h3.29v20.06h-3.29z" fill="#34A853"/>
+        <path d="M81.71 6.94c-3.23 0-5.92 1.48-7.24 4.41l2.92 1.21c.69-1.38 1.95-2.27 3.48-2.27 1.97 0 3.17 1.21 3.23 2.5l-.08.2c-.44-.22-1.38-.6-2.53-.6-3.13 0-6.19 1.78-6.19 5.34 0 3.27 2.87 5.38 5.92 5.38 2.33 0 3.59-1.04 4.35-2.18h.08v1.86h3.13V13.88c.01-4.32-3.17-6.94-7.3-6.94zm-.42 10.45c-1.07 0-2.61-.54-2.61-2.02 0-1.91 2.09-2.58 3.89-2.58.45 0 .86.05 1.25.13-.17 2.45-1.46 4.47-2.53 4.47z" fill="#EA4335"/>
+      </svg>
+    </div>
+
+    <!-- Screen 1: Account Selection -->
+    <div id="screen-accounts">
+      <div class="header">
+        <h1 class="title">Choose an account</h1>
+        <p class="subtitle">to continue to AcdyOn Pathway</p>
+      </div>
+
+      <div class="content-area">
+        <div class="account-item" onclick="selectAccount('student@acdyon.com', 'Demo Student')">
+          <div class="avatar">S</div>
+          <div class="account-details">
+            <span class="account-name">Demo Student</span>
+            <span class="account-email">student@acdyon.com</span>
+          </div>
+        </div>
+
+        <div class="account-item" onclick="selectAccount('admin@acdyon.com', 'Demo Admin')">
+          <div class="avatar admin">A</div>
+          <div class="account-details">
+            <span class="account-name">Demo Admin</span>
+            <span class="account-email">admin@acdyon.com</span>
+          </div>
+        </div>
+
+        <div class="custom-input-btn" onclick="showScreen('screen-email')">
+          <span>Use another account</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 2: Enter Email -->
+    <div id="screen-email" style="display: none;">
+      <div class="header">
+        <h1 class="title">Sign in</h1>
+        <p class="subtitle">to continue to AcdyOn Pathway</p>
+      </div>
+
+      <div class="content-area">
+        <div class="form-group">
+          <label for="email-input">Email or phone</label>
+          <input type="email" id="email-input" class="text-input" placeholder="you@gmail.com" autofocus>
+        </div>
+      </div>
+
+      <div class="btn-container">
+        <button class="btn btn-text" onclick="showScreen('screen-accounts')">Back</button>
+        <button class="btn btn-primary" onclick="submitEmail()">Next</button>
+      </div>
+    </div>
+
+    <!-- Screen 3: Enter Password & Name & Choose Role -->
+    <div id="screen-password" style="display: none;">
+      <div class="header">
+        <h1 class="title" id="welcome-title">Welcome</h1>
+        <p class="subtitle" id="display-email">email@gmail.com</p>
+      </div>
+
+      <div class="content-area">
+        <div class="form-group" id="name-field-group">
+          <label for="name-input">Full Name</label>
+          <input type="text" id="name-input" class="text-input" placeholder="Your Name">
+        </div>
+
+        <div class="form-group">
+          <label for="password-input">Enter your password</label>
+          <input type="password" id="password-input" class="text-input" placeholder="Password">
+        </div>
+
+        <div class="form-group">
+          <label for="role-select">Select Pathway Role</label>
+          <select id="role-select" class="select-input">
+            <option value="student">Student / Applicant</option>
+            <option value="admin">Academic Advisor / Admin</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-container">
+        <button class="btn btn-text" onclick="goBackToEmailOrAccounts()">Back</button>
+        <button class="btn btn-primary" onclick="submitAuth()">Next</button>
+      </div>
+    </div>
+
+    <!-- Screen 4: Loading Spinner -->
+    <div id="screen-loading" class="loading-container">
+      <div class="spinner"></div>
+      <p class="loading-text">Connecting to AcdyOn Pathway...</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <span class="footer-lang">English (United States)</span>
+      <div class="footer-links">
+        <a href="#" class="footer-link">Help</a>
+        <a href="#" class="footer-link">Privacy</a>
+        <a href="#" class="footer-link">Terms</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let authState = {
+      name: '',
+      email: '',
+      role: 'student',
+      isCustom: false
+    };
+
+    function showScreen(screenId) {
+      document.getElementById('screen-accounts').style.display = 'none';
+      document.getElementById('screen-email').style.display = 'none';
+      document.getElementById('screen-password').style.display = 'none';
+      document.getElementById('screen-loading').style.display = 'none';
+      
+      const target = document.getElementById(screenId);
+      if (screenId === 'screen-loading') {
+        target.style.display = 'flex';
+      } else {
+        target.style.display = 'block';
+      }
+    }
+
+    function selectAccount(email, name) {
+      authState.email = email;
+      authState.name = name;
+      authState.role = email.includes('admin') ? 'admin' : 'student';
+      authState.isCustom = false;
+
+      document.getElementById('welcome-title').innerText = name;
+      document.getElementById('display-email').innerText = email;
+      document.getElementById('name-field-group').style.display = 'none';
+      document.getElementById('password-input').value = 'password123';
+      document.getElementById('role-select').value = authState.role;
+
+      showScreen('screen-password');
+    }
+
+    function showCustomAccountForm(email) {
+      authState.email = email;
+      authState.isCustom = true;
+
+      document.getElementById('welcome-title').innerText = 'Sync Account';
+      document.getElementById('display-email').innerText = email;
+      document.getElementById('name-field-group').style.display = 'block';
+      document.getElementById('name-input').value = email.split('@')[0];
+      document.getElementById('password-input').value = '';
+      document.getElementById('role-select').value = 'student';
+
+      showScreen('screen-password');
+    }
+
+    function submitEmail() {
+      const email = document.getElementById('email-input').value.trim();
+      if (!email || !email.includes('@')) {
+        alert('Please enter a valid email address');
+        return;
+      }
+      showCustomAccountForm(email);
+    }
+
+    function goBackToEmailOrAccounts() {
+      if (authState.isCustom) {
+        showScreen('screen-email');
+      } else {
+        showScreen('screen-accounts');
+      }
+    }
+
+    function submitAuth() {
+      const password = document.getElementById('password-input').value;
+      if (!password) {
+        alert('Please enter your password');
+        return;
+      }
+
+      if (authState.isCustom) {
+        const name = document.getElementById('name-input').value.trim();
+        if (!name) {
+          alert('Please enter your name');
+          return;
+        }
+        authState.name = name;
+      }
+
+      authState.role = document.getElementById('role-select').value;
+
+      showScreen('screen-loading');
+
+      // Sync and send message back
+      setTimeout(() => {
+        const responseData = {
+          type: 'GOOGLE_LOGIN_SUCCESS',
+          user: {
+            name: authState.name,
+            email: authState.email,
+            role: authState.role
+          }
+        };
+        
+        // Post message back to the main window
+        if (window.opener) {
+          window.opener.postMessage(responseData, window.location.origin);
+        }
+        window.close();
+      }, 1500);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# IDE and System Files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Environment variables (Crucial for security)
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# Build outputs and dependencies
+**/target/
+**/dist/
+**/node_modules/
+**/*.class
+**/*.log
